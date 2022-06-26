@@ -1,19 +1,16 @@
-// npm global command comes with node
-// npm --version
-// local dependency - use it only int his particular project
-// npm i <packagename>
+var http= require('http')
+var fs= require('fs')
 
-// global dependency - use it in any project
-// npm install -g <packagename>
-// sudo npm install -g <packagename>(mac)
-
-//package.json - manifest file (store important info about project/package)
-// manual approach (Create package.json int the root , create proprties etc)
-// npm init (step by step , press enter to skip)
-// npm init -y (everything default)
-
-const _ = require('lodash');
-
-const items = [2,[3,[4,[5]]]];
-
-console.log(_.flattenDeep(items));
+http 
+    .createServer((req,res)=>{
+       // const text =fs.readFileSync('./content/big.txt','utf8')
+       //   res.end(text);
+       const fileStream= fs.createReadStream('./content/big.txt','utf8')
+       fileStream.on('open',()=>{
+        fileStream.pipe(res)
+       })
+       fileStream.on('error',(err)=>{
+        res.end(err);
+       })
+    })
+    .listen(5000);
